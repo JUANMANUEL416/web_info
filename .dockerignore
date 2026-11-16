@@ -1,0 +1,9 @@
+.git
+**/node_modules
+**/dist
+**/.quasar
+**/.env
+**/.env.pruebas
+**/*.log
+sql
+*.md

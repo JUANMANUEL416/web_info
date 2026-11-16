@@ -1,0 +1,51 @@
+# Clínica Esperanza (KESPERANZA)
+# En el servidor: copie .env.server.example a .env y ejecute
+#   docker compose up -d --build
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-view_info}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Definir POSTGRES_PASSWORD en .env}
+      POSTGRES_DB: ${POSTGRES_DB:-view_info_kesperanza}
+    volumes:
+      - view_info_pg:/var/lib/postgresql/data
+      - ./sql/003_standalone_full_dump.sql.gz:/docker-entrypoint-initdb.d/01_kesperanza.sql.gz:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      APP_ENV: production
+      PORT: 8080
+      STATIC_DIR: /app/public
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: ${POSTGRES_DB:-view_info_kesperanza}
+      PGUSER: ${POSTGRES_USER:-view_info}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Definir POSTGRES_PASSWORD en .env}
+      DB_SSL: "false"
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
+      MSSQL_HOST: ${MSSQL_HOST:-}
+      MSSQL_PORT: ${MSSQL_PORT:-1433}
+      MSSQL_USER: ${MSSQL_USER:-}
+      MSSQL_PASSWORD: ${MSSQL_PASSWORD:-}
+      MSSQL_DATABASE: ${MSSQL_DATABASE:-KESPERANZA}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+
+volumes:
+  view_info_pg:

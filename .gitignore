@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.quasar/
+*.log
+.DS_Store
+Thumbs.db
+
+# Secretos locales. Los *.example sí se versionan.
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.pruebas
+!**/.env.example
+!**/.env.pruebas.example
+!**/.env.server.example
+
+# El volcado operativo va comprimido. El .sql y el .zip son copias locales.
+sql/003_standalone_full_dump.sql
+sql/003_standalone_full_dump.zip

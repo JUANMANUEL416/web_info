@@ -1,0 +1,4 @@
+# El despliegue de KESPERANZA está en la raíz del repositorio.
+# Desde la raíz:
+#   copy .env.server.example .env
+#   docker compose up -d --build

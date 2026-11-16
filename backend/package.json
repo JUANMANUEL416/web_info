@@ -1,0 +1,26 @@
+{
+  "name": "view-info-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "dev:pruebas": "node --env-file=.env.pruebas --watch src/server.js",
+    "start": "node src/server.js",
+    "start:pruebas": "node --env-file=.env.pruebas src/server.js",
+    "db:create": "node scripts/create-db.mjs",
+    "db:init": "node scripts/db-init.mjs",
+    "db:pruebas:create": "node --env-file=.env.pruebas scripts/create-db.mjs",
+    "db:pruebas:init": "node --env-file=.env.pruebas scripts/db-init.mjs",
+    "db:pruebas:seed": "node --env-file=.env.pruebas scripts/seed-pruebas.mjs",
+    "db:seed": "node scripts/seed-pruebas.mjs"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mssql": "^12.7.14",
+    "pg": "^8.13.3"
+  }
+}
